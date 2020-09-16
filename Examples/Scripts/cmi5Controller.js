@@ -272,7 +272,20 @@ var cmi5Controller = (function () {
         getAuthToken: function (successCallback, tokenErrorCallBack) {
             // getAuthToken() calls the fetch url to get the authorization token. Two callback functions
             // may be provided. The first is what to call upon success, the other when there is an error.
-            // If cmi5Controller.setUp() is used, this method should not be called by the AU.
+            // If cmi5Controller.startUp() is used, this method should not be called by the AU.
+            
+            // First, check if we have already retrieved the auth token.
+            var token = sessionStorage.getItem(cmi5Controller.fetchUrl);
+            if (token) {
+                // We already have the auth token.  Do not call the fetchUrl again.
+                cmi5Controller.authToken = token;
+                SetConfig(data["auth-token"]);
+                if (successCallback && typeof successCallback === "function") {
+                    successCallback();
+                }
+            }
+            
+            // We do not already have the auth token.  Make call to fetchUrl to get it.
             var myRequest = new XMLHttpRequest();
             myRequest.open("POST", cmi5Controller.fetchUrl, true);
             myRequest.onreadystatechange = function() {
@@ -292,6 +305,11 @@ var cmi5Controller = (function () {
                         e = typeof (data["auth-token"]);
                         if (e === "string") {
                             cmi5Controller.authToken = data["auth-token"];
+                            
+                            // Store the token to sessionStorage
+                            sessionStorage.setItem(cmi5Controller.fetchUrl, cmi5Controller.authToken);
+                            
+                            // Set the endPointConfig to use this auth token
                             SetConfig(data["auth-token"]);
                             if (successCallback && typeof successCallback === "function") {
                                 successCallback();
@@ -311,13 +329,13 @@ var cmi5Controller = (function () {
         },
         getAgentProfile: function (callback) { 
             // Retrieves the agent profile document and sets cmi5Controller properties accordingly.
-            // If cmi5Controller.setUp() is used, this method should not be called by the AU.
+            // If cmi5Controller.startUp() is used, this method should not be called by the AU.
             ADL.XAPIWrapper.changeConfig(endPointConfig);
             ADL.XAPIWrapper.getAgentProfile(Agent_, "cmi5LearnerPreferences", null, callback);
         },
         getStateDocument: function (callback) {     
             // Retrieves the cmi5 State document and sets cmi5Controller properties accordingly.
-            // If cmi5Controller.setUp() is used, this method should not be called by the AU.
+            // If cmi5Controller.startUp() is used, this method should not be called by the AU.
             ADL.XAPIWrapper.changeConfig(endPointConfig);
             ADL.XAPIWrapper.getState(cmi5Controller.activityId, Agent_, "LMS.LaunchData", cmi5Controller.registration, null, callback);
         },
