@@ -279,7 +279,7 @@ var cmi5Controller = (function () {
             if (token) {
                 // We already have the auth token.  Do not call the fetchUrl again.
                 cmi5Controller.authToken = token;
-                SetConfig(data["auth-token"]);
+                SetConfig();
                 if (successCallback && typeof successCallback === "function") {
                     successCallback();
                     return;
@@ -312,7 +312,7 @@ var cmi5Controller = (function () {
                             sessionStorage.setItem(cmi5Controller.fetchUrl, cmi5Controller.authToken);
                             
                             // Set the endPointConfig to use this auth token
-                            SetConfig(data["auth-token"]);
+                            SetConfig();
                             if (successCallback && typeof successCallback === "function") {
                                 successCallback();
                             }
