@@ -282,12 +282,14 @@ var cmi5Controller = (function () {
                 SetConfig(data["auth-token"]);
                 if (successCallback && typeof successCallback === "function") {
                     successCallback();
+                    return;
                 }
             }
             
             // We do not already have the auth token.  Make call to fetchUrl to get it.
             var myRequest = new XMLHttpRequest();
             myRequest.open("POST", cmi5Controller.fetchUrl, true);
+            myRequest.withCredentials = true;
             myRequest.onreadystatechange = function() {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
