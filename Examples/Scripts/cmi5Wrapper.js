@@ -2,7 +2,10 @@ function FinishAU() {
     // ToDo List: 
     // 1) Calculate duration
     SendStatement("Terminated");
-    cmi5Controller.goLMS();
+
+    // TODO: Need to wait for statement to be sent to LRS rather than using 
+    // timeout
+    setTimeout(function(){ cmi5Controller.goLMS(); }, 1000);
 }
 
 function SendStatement(verbName, score, duration, progress) {
