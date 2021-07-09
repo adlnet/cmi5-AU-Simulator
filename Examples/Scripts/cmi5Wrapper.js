@@ -1,11 +1,15 @@
 function FinishAU() {
     // ToDo List: 
     // 1) Calculate duration
-    SendStatement("Terminated");
+    SendStatement("Terminated",undefined,undefined, undefined, returnToLMS);
     cmi5Controller.goLMS();
 }
 
-function SendStatement(verbName, score, duration, progress) {
+function returnToLMS() {
+    cmi5Controller.goLMS();
+}
+
+function SendStatement(verbName, score, duration, progress, callBack) {
     // What verb is to be sent?
     var verbUpper = verbName.toUpperCase();
     var verb;
@@ -96,7 +100,11 @@ function SendStatement(verbName, score, duration, progress) {
             }
         }
 
-        cmi5Controller.sendStatement(stmt, sentStatement);
+        if (callBack && typeof callBack === "function") {
+            cmi5Controller.sendStatement(stmt, callBack);
+        } else {
+            cmi5Controller.sendStatement(stmt, sentStatement);    
+        }
 
     } else {
         console.log("Invalid verb passed: " + verbName);
