@@ -8,6 +8,7 @@
     <script src="Scripts/cmi5Controller.js"></script>
     <script src="Scripts/xapiwrapper.min.js"></script>
     <script src="Scripts/cmi5Wrapper.js"></script>
+    <script src="Scripts/moment.min.js"></script>    
     <link href="Content/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="Content/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="Content/prettify.min.css" rel="stylesheet" type="text/css"/>
@@ -157,6 +158,13 @@
             // Enable the "next" button
             jq("#btnNext").prop("disabled", false);
         }
+        
+        function GetDuration() {
+            var start = moment(cmi5Controller.getStartDateTime());
+            var end = moment(Date.now());
+
+            return moment.duration(end.diff(start), "ms").toISOString();
+        }
 
         function GoPage(pageNo) {
             // Hides all pages except the requested page number.
@@ -169,15 +177,16 @@
             var score = testScore / 100;
 
             // Send passed/failed
+            var duration = GetDuration();
             if (score >= cmi5Controller.getMasteryScore()) {
-                SendStatement("Passed", score);
+                SendStatement("Passed", score, duration);
             } else {
-                SendStatement("Failed", score);
+                SendStatement("Failed", score, duration);
             }
 
             // Since the student reached page 2 of a two page course, it is completed.
             // Send a "cmi5 defined" completed statement.
-            SendStatement("Completed");
+            SendStatement("Completed", undefined, duration);
         }
 
         function sentStatement(resp, obj) {     
@@ -232,7 +241,7 @@
                         <h3 class="panel-title">Training Page 1</h3>
                     </div>
                     <div class="col-md-8">
-                        <button style="float: right;" type="button" class="btn btn-default" onclick="FinishAU();">Return to LMS</button>
+                        <button style="float: right;" type="button" class="btn btn-default" onclick="FinishAU(GetDuration());">Return to LMS</button>
                     </div>
                 </div>
             </div>
