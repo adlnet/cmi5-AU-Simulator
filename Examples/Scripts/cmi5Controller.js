@@ -84,7 +84,7 @@ var cmi5Controller = (function () {
 
         // All activites required by cmi5Controller.startUp() have been performed.  We can return
         // to the calling AU by executing the callback passed to cmi5Controller.startUp().
-        startDateTime = new Date();     // Time of launch
+        startDateTime = Date.now();     // Time of launch
         initializedCallback();
     }
 
