@@ -1,7 +1,7 @@
-function FinishAU() {
+function FinishAU(duration) {
     // ToDo List: 
     // 1) Calculate duration
-    SendStatement("Terminated",undefined,undefined, undefined, returnToLMS);
+    SendStatement("Terminated",undefined,duration, undefined, returnToLMS);
     cmi5Controller.goLMS();
 }
 
