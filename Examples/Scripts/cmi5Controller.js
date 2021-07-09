@@ -16,7 +16,7 @@ var cmi5Controller = (function () {
     // Public properties     
     // **********************
 
-    // Initalize properties that are passed on the launch command line
+    // Initialize properties that are passed on the launch command line
     this.endPoint = "";
     this.fetchUrl = "";
     this.registration = "";
