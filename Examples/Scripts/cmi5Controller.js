@@ -289,7 +289,7 @@ var cmi5Controller = (function () {
             // We do not already have the auth token.  Make call to fetchUrl to get it.
             var myRequest = new XMLHttpRequest();
             myRequest.open("POST", cmi5Controller.fetchUrl, true);
-            myRequest.withCredentials = true;
+            myRequest.withCredentials = false;
             myRequest.onreadystatechange = function() {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
