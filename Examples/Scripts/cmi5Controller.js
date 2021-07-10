@@ -109,7 +109,15 @@ var cmi5Controller = (function () {
 
             // Get other state properties into cmi5Controller properties.
             cmi5Controller.moveOn = obj["moveOn"];
-            cmi5Controller.masteryScore = obj["masteryScore"];
+
+            if(obj["masteryScore"] !== undefined) {
+              cmi5Controller.masteryScore = obj["masteryScore"];
+            }
+            else {
+              // mastery score should be zero if undefined in state properties
+              cmi5Controller.masteryScore = 0;
+            }
+
             cmi5Controller.launchMode = obj["launchMode"];
             cmi5Controller.launchMethod = obj["launchMethod"];
             cmi5Controller.sessionId = contextExtensions["https://w3id.org/xapi/cmi5/context/extensions/sessionid"];
